@@ -5,7 +5,7 @@
 #N=NTOTAL/100
 
 IMAGE = 'mrphys/mfsimage'
-IMAGE_TAG = 'base'
+IMAGE_TAG = 'fieldMap'
 COMPATIBLE_TAGS = {}
 RESULTS_TEMPLATE = {
     'error': 'Some',
