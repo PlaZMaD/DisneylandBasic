@@ -22,11 +22,17 @@ STATUS_FINAL = set([
     Job.COMPLETED,
     Job.FAILED,
 ])
-
-jobsNum = 10
-# nEvents_in = 6240925
-nEvents_in = 100
-
+exludeList = """
+"""
+exludeList = [int(i)-1 for i in exludeList.split()]
+jobsNum = 100
+nEvents_in = 13450391
+#nEvents_in = 100
+n = nEvents_in
+k = jobsNum
+startPoints = [i * (n // k) + min(i, n % k) for i in range(k)]
+chunkLength = [(n // k) + (1 if i < (n % k) else 0) for i in range(k)]
+chunkLength[-1] = chunkLength[-1] - 1
 def get_result(jobs):
     results = []
     for job in jobs:
@@ -50,9 +56,10 @@ def CreateJobInput(number):
     job['container']['cmd'] = job['container']['cmd'].format(
             job_id=number+1,
             IMAGE_TAG=IMAGE_TAG,
-            mfirstEvent=int(float(number*(nEvents_in/jobsNum))),
-	   # nEvents=17786274/
-            nEvents=int(float(nEvents_in/jobsNum + (((number + 1) == jobsNum) and [nEvents_in%jobsNum][0] or 0) ))
+            #mfirstEvent=int(float(number*(nEvents_in/jobsNum))),
+            mfirstEvent = startPoints[number],
+            #nEvents=int(float(nEvents_in/jobsNum + (((number + 1) == jobsNum) and [nEvents_in%jobsNum][0] or 0) ))
+            nEvents = chunkLength[number]
         )
     job['required_outputs']['output_uri'] = job['required_outputs']['output_uri'].format(job_id=number+1)
 
@@ -105,7 +112,7 @@ def makeRun(tag, verbose=False):
             kind='docker',
             metadata=CreateMetaData(tag)
         ))
-        for i in range(jobsNum)
+        for i in range(jobsNum) if i not in exludeList
 	#for i in [1, 4, 9, 10, 16, 17, 21, 24, 27, 42, 56, 64, 85, 94, 96]
     ]
 

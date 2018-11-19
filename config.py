@@ -5,7 +5,7 @@
 #N=NTOTAL/100
 
 IMAGE = 'mrphys/mfsimage'
-IMAGE_TAG = 'base'
+IMAGE_TAG = 'fieldMap'
 COMPATIBLE_TAGS = {}
 RESULTS_TEMPLATE = {
     'error': 'Some',
@@ -36,7 +36,7 @@ JOB_TEMPLATE = {
 	'''mv ship.conical.MuonBack-TGeant4_rec.root /output/' ''',
     },
     'required_outputs': {
-        'output_uri': 'eos:/eos/experiment/ship/user/ekurbato/fastFlux/tests/new_disney_script2/{job_id}/',
+        'output_uri': 'eos:/eos/experiment/ship/user/ekurbato/fastFlux/try_100/fieldMap/{job_id}/',
     }
 }
 
