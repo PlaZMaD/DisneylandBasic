@@ -1,11 +1,5 @@
-# Configuration file for the optimisation. Only static global variables.
-#
-# For testing whether the config is sane, please add tests to `test_config.py`
-#NTOTAL=17786274
-#N=NTOTAL/100
-
 IMAGE = 'mrphys/mfsimage'
-IMAGE_TAG = 'fieldMap'
+IMAGE_TAG = 'bBase'
 COMPATIBLE_TAGS = {}
 RESULTS_TEMPLATE = {
     'error': 'Some',
@@ -15,8 +9,7 @@ RESULTS_TEMPLATE = {
 JOB_TEMPLATE = {
     'nEvents':0,
     'mfirstEvent':0,
-    'input': ['eos:/eos/experiment/ship/data/Mbias/background-prod-2018/'
-              'pythia8_Geant4_10.0_withCharmandBeauty0_mu.root'],
+    'input': ['eos:/eos/experiment/ship/data/Mbias/background-prod-2018/{fileName}'],
     'container': {
         'workdir':
         '',
@@ -31,12 +24,12 @@ JOB_TEMPLATE = {
         'min_memoryMB': 1024,
         'run_id':'near_run3',
         'cmd':
-        '''/bin/bash -l -c 'alienv -w sw setenv  FairShip/latest  -c  python2 /sw/slc7_x86-64/FairShip/master-1/macro/run_simScript.py   --MuonBack --sameSeed 1 --seed 1 -f /input/pythia8_Geant4_10.0_withCharmandBeauty0_mu.root  --nEvents {nEvents}  --firstEvent {mfirstEvent} --output /output; '''
-	'''alienv -w sw setenv  FairShip/latest  -c  python2 /sw/slc7_x86-64/FairShip/master-1/macro/ShipReco.py -g /output/geofile_full.conical.MuonBack-TGeant4.root -f /output/ship.conical.MuonBack-TGeant4.root --realPR=Prev;'''
+        '''/bin/bash -l -c 'alienv -w sw setenv  FairShip/latest  -c  python2 /sw/slc7_x86-64/FairShip/master-1/macro/run_simScript.py   --MuonBack --sameSeed 1 --seed 1 -f /input/{fileName}  --nEvents {nEvents}  --firstEvent {mfirstEvent} --output /output --FastMuon; '''
+	'''alienv -w sw setenv  FairShip/latest  -c  python2 /sw/slc7_x86-64/FairShip/master-1/macro/ShipReco.py -g /output/geofile_full.conical.MuonBack-TGeant4.root -f /output/ship.conical.MuonBack-TGeant4.root ;'''
 	'''mv ship.conical.MuonBack-TGeant4_rec.root /output/' ''',
     },
     'required_outputs': {
-        'output_uri': 'eos:/eos/experiment/ship/user/ekurbato/fastFlux/tests/new_disney_script2/{job_id}/',
+        'output_uri': 'eos:/eos/experiment/ship/user/ekurbato/fastFlux/Dec_22/{fileName}/base/{job_id}/',
     }
 }
 
