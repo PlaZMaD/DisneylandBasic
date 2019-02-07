@@ -4,13 +4,18 @@ import json
 import base64
 import copy
 import argparse
-from disneylandClient import (
+# from disneylandClient import (
+#     new_client,
+#     Job,
+#     RequestWithId,
+# )
+from .wonderlandClient import (
     new_client,
     Job,
     RequestWithId,
 )
-import config
-from config import RUN, IMAGE_TAG
+
+from .config import RUN, IMAGE_TAG, METADATA_TEMPLATE, JOB_TEMPLATE
 # import disney_common as common
 
 STATUS_IN_PROCESS = set([
@@ -37,7 +42,7 @@ def get_result(jobs):
     return 0, 0, 0, 0
 
 def CreateMetaData(tag):
-    metadata = copy.deepcopy(config.METADATA_TEMPLATE)
+    metadata = copy.deepcopy(METADATA_TEMPLATE)
     metadata['user'].update([
         ('tag', tag),
     ])
@@ -45,7 +50,7 @@ def CreateMetaData(tag):
 
 
 def CreateJobInput(number, options):
-    job = copy.deepcopy(config.JOB_TEMPLATE)
+    job = copy.deepcopy(JOB_TEMPLATE)
     job['container']['cmd'] = job['container']['cmd'].format(
             job_id=number+1,
             IMAGE_TAG=IMAGE_TAG,
@@ -56,10 +61,11 @@ def CreateJobInput(number, options):
             # nEvents = chunkLength[number]
             nEvents = options['chunkLength'][number],
             fileName = 'pythia8_Geant4_10.0_withCharmandBeauty' + str(int(options['fileN']*1000)) + '_mu.root'
+            # fileName = 'pythia'
         )
     job['required_outputs']['output_uri'] = job['required_outputs']['output_uri'].format(job_id=number+1, fileName=str(options['fileN']))
     job['input'][0] = job['input'][0].format(fileName = 'pythia8_Geant4_10.0_withCharmandBeauty' + str(int(options['fileN']*1000)) + '_mu.root')
-    with open('logs/'+str(number)+'.json', 'w') as outfile:
+    with open('logs/'+str(number)+'.json', 'w+') as outfile:
         json.dump(job, outfile)
 
     return json.dumps(job)
