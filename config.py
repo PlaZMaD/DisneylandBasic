@@ -9,15 +9,13 @@ RESULTS_TEMPLATE = {
 JOB_TEMPLATE = {
     'nEvents':0,
     'mfirstEvent':0,
-    'input': ['eos:/eos/experiment/ship/data/Mbias/background-prod-2018/{fileName}'],
+    'input': [],
     'container': {
-        'workdir':
-        '',
+        'workdir': '',
         'name':
         '{}:{}'.format(IMAGE, IMAGE_TAG),
         'volumes': [
-            '/home/sashab1/ship-shield:/shield',
-            '/home/sashab1/ship/shared:/shared'
+            '/srv/local/skygrid-local-storage/ship/pythia8_Geant4_10.0_withCharmandBeauty:/input'
         ],
         'cpu_needed': 3,
         'max_memoryMB': 2048,
