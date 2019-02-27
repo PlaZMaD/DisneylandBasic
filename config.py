@@ -15,7 +15,7 @@ JOB_TEMPLATE = {
         'name':
         '{}:{}'.format(IMAGE, IMAGE_TAG),
         'volumes': [
-            '/srv/local/skygrid-local-storage/ship/pythia8_Geant4_10.0_withCharmandBeauty:/input'
+            '/srv/skygrid/ship:/input'
         ],
         'cpu_needed': 3,
         'max_memoryMB': 2048,
